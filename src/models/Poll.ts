@@ -19,7 +19,7 @@ export interface IComment extends Document {
   user: Types.ObjectId;
   text: string;
   createdAt: Date;
-  reactions: IReaction[];
+  reactions: IReaction[]
 }
 
 export interface IPoll extends Document {
