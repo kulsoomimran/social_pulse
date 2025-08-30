@@ -99,4 +99,24 @@ const getPolls = async (): Promise<IPoll[]> => {
   return Poll.find().sort({ createdAt: -1 }).populate("comments.user", "username email");
 };
 
-export default { createPoll, votePoll, addComment, getPolls };
+const getPollById = async (pollId: string): Promise<IPoll | null> => {
+  return Poll.findById(pollId).populate("comments.user", "username email");
+};
+
+const addReaction = async (commentId: string, userId: string, type: string): Promise<IPoll | null> => {
+  const poll = await Poll.findOne({ "comments._id": commentId });
+  if (!poll) throw new Error("Poll not found");
+
+  const comment = poll.comments.id(commentId);
+  if (!comment) throw new Error("Comment not found");
+  comment.reactions = comment.reactions.filter(r => r.user.toString() !== userId);
+  comment.reactions.push({ user: new Types.ObjectId(userId), type });
+
+  await poll.save();
+  return poll;
+};
+
+
+export default { createPoll, votePoll, addComment, getPolls, getPollById, addReaction };
+
+

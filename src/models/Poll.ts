@@ -9,11 +9,17 @@ export interface IOption extends Document {
   votes: number;
 }
 
+export interface IReaction {
+  user: Types.ObjectId;
+  type: string;
+}
+
 export interface IComment extends Document {
   _id: Types.ObjectId;
   user: Types.ObjectId;
   text: string;
   createdAt: Date;
+  reactions: IReaction[];
 }
 
 export interface IPoll extends Document {
@@ -35,7 +41,13 @@ const optionSchema = new Schema<IOption>({
 const commentSchema = new Schema<IComment>({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   text: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  reactions: [
+    {
+      user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+      type: { type: String, enum: ["like", "love", "haha", "sad", "angry"], required: true }
+    }
+  ]
 });
 
 const pollSchema = new Schema<IPoll>({

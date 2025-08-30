@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import { createServer } from "http";
@@ -34,7 +33,7 @@ app.get("/", (req: Request, res: Response) => {
 connectDB();
 
 // Sockets
-pollSocket(io);   // ✅ attach poll socket logic
+pollSocket(io);   
 
 // Start server
 const PORT = process.env.PORT || 5000;

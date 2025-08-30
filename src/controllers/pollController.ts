@@ -71,3 +71,28 @@ export const addComment = async (req: AuthRequest, res: Response) => {
     res.status(400).json({ error: (err as Error).message });
   }
 };
+
+export const getComments = async (req: Request, res: Response) => {
+  try {
+    const { pollId } = req.params;
+    const poll = await pollService.getPollById(pollId);
+    if (!poll) return res.status(404).json({ message: "Poll not found" });
+    res.json(poll.comments);
+  } catch (err: any) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const addReaction = async (req: Request, res: Response) => {
+  try {
+    const { type } = req.body;
+    const { commentId } = req.params;
+    const userId = (req as any).userId;
+
+    const poll = await pollService.addReaction(commentId, userId, type);
+    res.json(poll);
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
