@@ -1,6 +1,7 @@
 // sockets/pollSocket.ts
 import { Server, Socket } from "socket.io";
 import Poll from "../models/Poll";
+import pollService from "../services/pollService";
 
 export default function pollSocket(io: Server) {
   io.on("connection", (socket: Socket) => {
@@ -42,6 +43,12 @@ export default function pollSocket(io: Server) {
         console.error("Error voting poll:", err);
       }
     });
+
+    socket.on("comment", async ({ pollId, userId, text }) => {
+  const poll = await pollService.addComment(pollId, userId, text);
+  if (poll) io.emit("pollUpdated", poll); // broadcast updated poll with comments
+});
+
 
     socket.on("disconnect", () => {
       console.log("❌ User disconnected:", socket.id);

@@ -7,7 +7,8 @@ import { Server } from "socket.io";
 import connectDB from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import pollRoutes from "./routes/pollRoutes";
-import pollSocket from "./sockets/pollSocket";   // ✅ import
+import gamificationRoutes from "./routes/gamificationRoutes";
+import pollSocket from "./sockets/pollSocket";   
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/polls", pollRoutes);
+app.use("/api/gamification", gamificationRoutes);
 
 // Root test
 app.get("/", (req: Request, res: Response) => {
