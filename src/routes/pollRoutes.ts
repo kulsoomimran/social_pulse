@@ -4,12 +4,12 @@ import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, createPoll);   
-router.post("/:pollId/vote", authMiddleware, votePoll); 
-router.post("/comment", authMiddleware, addComment);
-router.get("/", authMiddleware, getPolls);
+router.post("/", createPoll);   
+router.post("/:pollId/vote", votePoll); 
+router.post("/comment", addComment);
+router.get("/", getPolls);
 router.get("/:pollId/comments", getComments);
-router.post("/comments/:commentId/reactions", authMiddleware, addReaction);
+router.post("/comments/:commentId/reactions", addReaction);
 
 
 export default router;
